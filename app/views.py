@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from api.models import Redflag, my_red_flags
+from app.models import Redflag, my_red_flags
 
 
 app = Flask(__name__)

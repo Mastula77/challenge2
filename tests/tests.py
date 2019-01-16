@@ -1,11 +1,11 @@
 import unittest
 import json
-from api.routes import app, my_red_flags
+from app.views import my_app, my_red_flags
 
 
 class BaseTest(unittest.TestCase):
 	def setUp(self):
-		self.client = app.test_client()
+		self.client = my_app.test_client()
 
 
 		self.sample_record_data = {
