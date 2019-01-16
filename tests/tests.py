@@ -80,7 +80,7 @@ class TestRedFlag(BaseTest):
 	def test_edit_location(self):
 		
 		new_location = {"location": "Mukono"}
-		response = self.client.patch(
+		response = self.client.put(
 			"/api/v1/red-flags/{}/location".format(my_red_flags[0]["id"]),
 			content_type="application/json",
 			data=json.dumps(new_location)
@@ -108,7 +108,7 @@ class TestRedFlag(BaseTest):
 			data=json.dumps(new_comment)
 			)
 		self.assertEqual(response.status_code, 200)
-		#self.assertEqual(self.sample_record_data[0]["comment"], "Tribalism")
+
 
 
 
@@ -127,73 +127,10 @@ class TestRedFlag(BaseTest):
 	def test_edit_mycomment(self):
 		
 		new_comment = {"comment": "Bad reports"}
-		response = self.client.patch(
+		response = self.client.put(
 			"/api/v1/red-flags/{}/comment".format(my_red_flags[0]["id"]),
 			content_type="application/json",
 			data=json.dumps(new_comment)
 			)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(my_red_flags[0]["comment"], "Bad reports")
-
-
-
-
-
-
-			
-
-
-
-
-
-
-
-
-
-
-
-   
-                
-
-
-		        
-	
-	
-		
-
-	
-
-	
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-	
-
-
-	
-		
-
-
-
-    
-
-
-    
-
-
-
-    
-
-
-

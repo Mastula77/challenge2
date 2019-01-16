@@ -92,7 +92,7 @@ def delete_red_flag(flag_id):
 
 
  # API end point to edit location of  red-flag record
-@app.route("/api/v1/red-flags/<int:flag_id>/location", methods=["PATCH"])
+@app.route("/api/v1/red-flags/<int:flag_id>/location", methods=["PUT"])
 def edit_red_flag_location(flag_id):
     data = request.get_json()
 
@@ -116,7 +116,7 @@ def edit_red_flag_location(flag_id):
                         })
 
 # API end point to edit comment of a  red-flag record
-@app.route("/api/v1/red-flags/<int:flag_id>/comment", methods=["PATCH"])
+@app.route("/api/v1/red-flags/<int:flag_id>/comment", methods=["PUT"])
 def edit_red_flag_comment(flag_id):
     data = request.get_json()
     for red_flag_record in my_red_flags:
@@ -135,24 +135,3 @@ def edit_red_flag_comment(flag_id):
                         "Error": "Red flag is not available"
                         })
    
-            
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
