@@ -51,3 +51,78 @@ def get_all_red_flags():
         }), 200
     
 
+#API end point to fetch a specific record
+@app.route("/api/v1/red-flags/<int:flag_id>", methods=["GET"])
+def get_a_redflag(flag_id):
+    red_flag_record= [red_flag for red_flag in my_red_flags if red_flag['id'] == flag_id]
+    if red_flag_record:
+        return jsonify({
+            "status": 200,
+        	"redflag": red_flag_record
+        	}), 200
+    return jsonify({
+    	"status": 404,
+        "Error": " Invalid record"
+    	})
+
+# API end point to delete a specific record
+@app.route("/api/v1/red-flags/<int:flag_id>", methods=["DELETE"])
+def delete_red_flag(flag_id):
+    red_flag_record = [flag for flag in my_red_flags if flag['id'] == flag_id]
+    if len(my_red_flags) == 0:
+        return jsonify({
+        	"status": "400",
+            "Error": "Invalid request"
+        	}), 404
+    my_red_flags.remove(red_flag_record[0])
+    return jsonify({
+    	'Result': "record was deleted successfully"
+    	}), 204
+
+
+
+
+ # API end point to edit location of  red-flag record
+@app.route("/api/v1/red-flags/<int:flag_id>/location", methods=["PUT"])
+def edit_red_flag_location(flag_id):
+    data = request.get_json()
+
+    for red_flag_record in my_red_flags:
+        if red_flag_record['id'] == flag_id:
+            red_flag_record["location"] = data["location"]
+            return jsonify({
+                "status" : 200, 
+                "data": [{
+                    "id": "flag_id", 
+                    "message": "Updated red-flag's record location",
+                    "red_flag":red_flag_record
+                    }]
+            }), 200
+    
+    
+    if not red_flag_record:
+        return jsonify({
+                         "status": "400",
+                        "Error": "Red flag is not available"
+                        })
+
+# API end point to edit comment of a  red-flag record
+@app.route("/api/v1/red-flags/<int:flag_id>/comment", methods=["PUT"])
+def edit_red_flag_comment(flag_id):
+    data = request.get_json()
+    for red_flag_record in my_red_flags:
+        if red_flag_record['id'] == flag_id:
+            red_flag_record["comment"]= data["comment"]
+            return jsonify({
+                "status" : 200, 
+                "data": [{
+                    "id": "flag_id",
+                    "message": "Updated red-flag's record comment"
+                    }]
+                }), 200
+    if not red_flag_record:
+        return jsonify({
+                        "status": "400",
+                        "Error": "Red flag is not available"
+                        })
+   
