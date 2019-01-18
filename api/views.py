@@ -9,7 +9,7 @@ def home():
     """A welcoming route to my api"""
 
     return jsonify({
-        'message': 'Welcome to Mastula\'s iReporter app.',
+        'message': "Welcome to Mastula\'s iReporter app.",
         'status': '200'
     }), 200
 

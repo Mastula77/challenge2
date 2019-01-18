@@ -32,7 +32,7 @@ class TestRedFlag(BaseTest):
 		
 	def test_home(self):
 		response = self.client.get('/')
-		assert b'Welcome to mastula\'s iReporter app.' in response.data
+		assert "Welcome to Mastula\'s iReporter app." in response.data
 		assert response.status_code == 200
 
 
@@ -100,7 +100,7 @@ class TestRedFlag(BaseTest):
 			content_type = "application/json")
 		new_comment = {"comment": "Tribalism"}
 		red_flag = json.loads(response.data.decode())["redflag"][0]
-		response = self.client.patch(
+		response = self.client.put(
 			"/api/v1/red-flags/{}/comment"
 			.format(red_flag["id"]),
 			content_type="application/json",

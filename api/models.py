@@ -48,7 +48,7 @@ class User:
         self.registered = registered
         self.is_admin = is_admin
 
-    def format_user_record(self):
+    def get_user_record(self):
         return {
         'id': self._id, 
         'firstname': self.firstname, 
