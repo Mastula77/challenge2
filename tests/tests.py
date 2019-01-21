@@ -30,10 +30,17 @@ class TestRedFlag(BaseTest):
 		self.assertEqual(response.content_type, "application/json")
 		self.assertIn(b"Created red-flag record", response.data)
 		
+<<<<<<< HEAD
 	def test_home(self):
 		response = self.client.get('/')
 		#self.assert ("Welcome to Mastula\'s iReporter app." in response.data)
 		self.assertEqual(response.status_code, 200)
+=======
+	#def test_home(self):
+		#response = self.client.get('/')
+		#assert "Welcome to Mastula\'s iReporter app." in response.data
+		#assert response.status_code == 200
+>>>>>>> a52c3ecd26ee0def8a19447d2330bd3279e2ac2a
 
 
 	def test_get_all_redflags(self):
