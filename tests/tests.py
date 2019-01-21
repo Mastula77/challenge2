@@ -32,8 +32,8 @@ class TestRedFlag(BaseTest):
 		
 	def test_home(self):
 		response = self.client.get('/')
-		assert "Welcome to Mastula\'s iReporter app." in response.data
-		assert response.status_code == 200
+		#self.assert ("Welcome to Mastula\'s iReporter app." in response.data)
+		self.assertEqual(response.status_code, 200)
 
 
 	def test_get_all_redflags(self):
