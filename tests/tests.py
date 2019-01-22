@@ -142,3 +142,4 @@ class TestRedFlag(BaseTest):
 			)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(my_red_flags[0]["comment"], "Bad reports")
+
