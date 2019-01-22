@@ -123,6 +123,10 @@ class TestRedFlag(BaseTest):
 		data =json.dumps(record))
 		self.assertEqual(len(my_red_flags), 0)
 
+	def test_delete_reecord_which_redflag_id_does_not_exist(self):
+		response = self.client.delete("/api/v1/red-flags/21",content_type = "application/json")
+		self.assertEqual(response.status_code, 404)
+
 
 	def test_edit_mycomment(self):
 		
