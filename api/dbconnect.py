@@ -9,12 +9,12 @@ class Dbconnection:
     def __init__(self):
         try:
             self.connection = psycopg2.connect(
-                host="127.0.0.1", dbname="challenge3", user="hayirat", password="password"
+                host="localhost", dbname="challenge3", user="", password=""
                 )
             self.connection.autocommit = True
             self.cursor = self.connection.cursor()
             self.dict_cursor=self.connection.cursor(cursor_factory=RealDictCursor)
-
+            print(f"you are connected to{challenge3}")
         except: 
             pprint("failed to connect to the database")
 
@@ -29,14 +29,14 @@ class Dbconnection:
         try:
             create_user = """CREATE TABLE Users(\
             user_id SERIAL primary key,\
-            firstname VARCHAR(20) NOT NULL,\
-            lastname VARCHAR(20) NOT NULL,\
+            firstname VARCHAR(20) ,\
+            lastname VARCHAR(20) ,\
             username VARCHAR(15) NOT NULL,\
-            othernames VARCHAR(15) NOT NULL,\
+            othernames VARCHAR(15) ,\
             email VARCHAR(30) NOT NULL,\
-            phonenumber VARCHAR(15) NOT NULL,\
-            registered TIMESTAMP NOT NULL,\
-            Is_admin BOOLEAN NOT NULL,\
+            phonenumber VARCHAR(15) ,\
+            registered TIMESTAMP DEFAULT "CURRENT_TIMESTAMP",\
+            Is_admin BOOLEAN DEFAULT FALSE,\
             password VARCHAR(20) NOT NULL);"""
             self.cursor.execute(create_user)
 
@@ -47,7 +47,7 @@ class Dbconnection:
         try:
             create_record = """CREATE TABLE IF NOT EXISTS Incident(\
             record_id SERIAL primary key,\
-            createdOn VARCHAR(15) NOT NULL,\
+            createdOn TIMESTAMP DEFAULT "CURRENT_TIMESTAMP",\
             createdBy VARCHAR(30) NOT NULL,\
             type VARCHAR(30) NOT NULL,\
             location VARCHAR(30) NOT NULL,\
@@ -60,8 +60,21 @@ class Dbconnection:
         except Exception as e:
             pprint(e)
 
+    def create_users(self):
 
-if __name__=='__main__':
-    con = Dbconnection()
-    con.tables()
-    con.tables1()
+        new_user = """INSERT INTO Users(lastname,
+            username, email, password
+            ) 
+            VALUES(
+            'logose','mercy','logosemastula@gmail.com','12hgan'
+        );"""
+        self.cursor.execute(new_user)
+
+    def create_incident(self):
+        new_incident = """INSERT INTO Incident(createdOn, createdBy,
+        type, location, status, comment)
+        VALUES(
+            'mastula','02/02/2002','redflag', 'mukono', 'pending' 'good'
+        );"""
+        self.cursor.execute(new_incident)
+  

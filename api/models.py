@@ -5,7 +5,7 @@ my_red_flags = []
 
 
 class Incident:
-
+    
     def __init__(self, createdBy, _type, place, status, Images, Videos, comment):
 
         self._id = len(my_red_flags) + 1

@@ -2,7 +2,6 @@ import unittest
 import json
 from api.views import app, my_red_flags
 
-
 class BaseTest(unittest.TestCase):
 	def setUp(self):
 		self.client = app.test_client()
@@ -35,7 +34,6 @@ class TestRedFlag(BaseTest):
 		#assert "Welcome to Mastula\'s iReporter app." in response.data
 		#assert response.status_code == 200
 
-
 	def test_get_all_redflags(self):
 		self.client.post(
 			"/api/v1/red-flags",
@@ -49,7 +47,6 @@ class TestRedFlag(BaseTest):
 		self.assertEqual(response.status_code, 200)
 		self.assertIn("createdBy", str(response.data))
 		self.assertEqual(response.content_type, "application/json")
-
 
 	""" missing value field = bad """
 	def test_post(self):
@@ -78,7 +75,7 @@ class TestRedFlag(BaseTest):
 
 
 	def test_edit_location(self):
-		
+
 		new_location = {"location": "Mukono"}
 		response = self.client.put(
 			"/api/v1/red-flags/{}/location".format(my_red_flags[0]["id"]),
@@ -109,9 +106,6 @@ class TestRedFlag(BaseTest):
 			)
 		self.assertEqual(response.status_code, 200)
 
-
-
-
 	def test_delete_record(self):
 		response = self.client.delete(
 			"/api/v1/red-flags/1"
@@ -138,3 +132,16 @@ class TestRedFlag(BaseTest):
 			)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(my_red_flags[0]["comment"], "Bad reports")
+	
+	def test_get_all_users(self):
+		
+			response=self.client.post('/api/v1/users/signup/',\
+				data = json.dumps(dict(username = 'mastula',password = 'coolwater',email = 'logosem@gmail.com')),\
+				content_type = ('application/json'))
+			response = self.client.get('/api/v1/users/',content_type = 'application/json')
+			self.assertEqual(response.status_code,404)
+
+	def test_get_all_users_in_empty_record(self):
+			response = self.client.get('/api/v1/users/',
+				content_type = 'application/json')
+			self.assertEqual(response.status_code,404)
