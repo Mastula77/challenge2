@@ -1,0 +1,17 @@
+[report]
+show_missing=True
+
+omit =
+    */python?.?/*
+    */site-packages/nose/*
+    */__pycache__/*
+    *.__pycache__*
+    *.pyc
+    */venv/lib/python2.7/*
+    */__init__.py*
+    */.pytest_cache/*
+    */tests/*
+    */home/andela/mastuAndela/challenge2/venv/lib/python2.7/site-packages/*
+
+
+

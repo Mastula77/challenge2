@@ -4,7 +4,7 @@ import uuid
 my_red_flags = []
 
 
-class Redflag:
+class Incident:
 
     def __init__(self, createdBy, _type, place, status, Images, Videos, comment):
 
@@ -18,7 +18,7 @@ class Redflag:
         self.Videos = Videos
         self.comment = comment
 
-    def format_record(self):
+    def get_record(self):
 
         return {
 
@@ -48,7 +48,7 @@ class User:
         self.registered = registered
         self.is_admin = is_admin
 
-    def format_user_record(self):
+    def get_user_record(self):
         return {
         'id': self._id, 
         'firstname': self.firstname, 
