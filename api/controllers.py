@@ -1,37 +1,62 @@
-from flask import Flask
-from api.views import Routes
-route_response = Routes()
+from flask import Flask,jsonify,json,request
+from api.dbconnect import Dbconnection
 app = Flask(__name__)
-
-@app.route('/v2/users/signup/', methods = ['POST'])
-def post_user():
-    return route_response.create_user()
-
-
-@app.route("/v2/users/login/", methods = ["POST"])
-def login_user():
-    return route_response.login()
-
-
-
-@app.route("/v2/users/", methods = ["GET"])
-def get_an_incident():
-    return route_response.fetch_an_incident()
-
-@app.route("/v2/users/", methods = ["GET"])
-def get_all_incidents():
-    return route_response.fetch_all_incidents()
-
-@app.route("/v2/users/<int incident_id>/location", methods = ["PATCH"])
-def edit_user():
-    return route_response.update_user()
-
-
-@app.route("/v2/users/<int:incident_id>/", methods = ["DELETE"])
-def delete_incident():
-    return route_response.delete.record()
-
-
-
-
-
+new_db = Dbconnection()
+class Routes:
+    def fetch_all_incidents(self):
+        get_record=new_db.get_incident()
+        if get_record:
+            return jsonify({
+                'status': 200,
+                'data':get_record
+                })
+        return jsonify({
+            'status':400,
+            'Error':"No records found"
+            })
+    def fetch_an_incident(self,record_id):
+        get_record= new_db.get_an_incident(record_id)
+        if get_record:
+            return jsonify({
+                'status':200,
+                'data':get_record
+            })
+        return jsonify({
+            'status': 400,
+            'Error': "Record not found"
+            })
+    def insert_incident(self):
+        if not request.json:
+            return jsonify({
+               'status':400,
+                'message':'Record not created'
+            })
+        data = request.get_json()
+        if 'createdBy' not in data:
+            return jsonify({
+               'status':400, 'Error': 'information is missing' 
+            })
+        
+        createdBy=data["createdBy"] 
+        interventiontype=data["interventiontype"]
+        location = data["location"]
+        status = data["status"]
+        comment = data["comment"]
+        get_record = new_db.create_incident(createdBy,interventiontype,location,status,comment)  
+        #data.append(get_record.create_incident())  
+        return jsonify ({
+            'status':200,
+            'message':'created intervention record'
+        })
+    def edit_incident(self,record_id,location):
+        get_record =new_db.update_incident(record_id,location)
+        if get_record:
+            return jsonify({
+                'status': 200,
+                'message':'Update is succesfull'
+            })
+        return jsonify({
+            'status':400,
+            'message':'uncessfull'
+        })
+    

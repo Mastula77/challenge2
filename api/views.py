@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
 from api.models import Incident, my_red_flags
-
-
+from api.controllers import Routes
 app = Flask(__name__)
+get_record = Routes()
 
 @app.route("/")
 def home():
@@ -58,7 +58,8 @@ def create_red_flag():
 #API end point to fetch a specific record
 @app.route("/api/v1/red-flags/<int:flag_id>", methods=["GET"])
 def get_a_redflag(flag_id):
-    red_flag_record= [red_flag for red_flag in my_red_flags if red_flag['id'] == flag_id]
+    red_flag_record= [red_flag for red_flag 
+    in my_red_flags if red_flag['id'] == flag_id]
     if red_flag_record:
         return jsonify({
             "status": 200,
@@ -72,7 +73,8 @@ def get_a_redflag(flag_id):
 # API end point to delete a specific record
 @app.route("/api/v1/red-flags/<int:flag_id>", methods=["DELETE"])
 def delete_red_flag(flag_id):
-    red_flag_record = [flag for flag in my_red_flags if flag['id'] == flag_id]
+    red_flag_record = [flag for flag in my_red_flags 
+    if flag['id'] == flag_id]
     if len(my_red_flags) == 0:
         return jsonify({
         	"status": "400",
@@ -82,9 +84,6 @@ def delete_red_flag(flag_id):
     return jsonify({
     	'Result': "record was deleted successfully"
     	}), 204
-
-
-
 
  # API end point to edit location of  red-flag record
 @app.route("/api/v1/red-flags/<int:flag_id>/location", methods=["PUT"])
@@ -102,8 +101,7 @@ def edit_red_flag_location(flag_id):
                     "red_flag":red_flag_record
                     }]
             }), 200
-    
-    
+        
     if not red_flag_record:
         return jsonify({
                          "status": "400",
@@ -129,5 +127,20 @@ def edit_red_flag_comment(flag_id):
                         "status": "400",
                         "Error": "Red flag is not available"
                         })
-                        
-   
+
+@app.route("/v2/incidents", methods = ["GET"])
+def get_all_incidents():
+    return get_record.fetch_all_incidents()
+
+@app.route("/v2/incidents/<int:record_id>", methods =["GET"])
+def get_an_incident(record_id):
+    return get_record.fetch_an_incident(record_id)
+
+@app.route("/v2/incidents", methods =["POST"])
+def create_an_incident():
+    return get_record.insert_incident()
+
+@app.route("/v2/incident/<int:record_id>", methods =["PUT"])
+def edit_an_incident(record_id,location):
+    return get_record.edit_incident(record_id,location)
+
