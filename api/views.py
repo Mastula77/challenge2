@@ -49,7 +49,11 @@ def get_all_red_flags():
         "status": 200,
         "data": my_red_flags
         }), 200
-    
+
+@app.route("/api/v2/red-flag", methods=["POST"])
+def create_red_flag():
+    if not request.json:
+        return
 
 #API end point to fetch a specific record
 @app.route("/api/v1/red-flags/<int:flag_id>", methods=["GET"])
@@ -125,4 +129,5 @@ def edit_red_flag_comment(flag_id):
                         "status": "400",
                         "Error": "Red flag is not available"
                         })
+                        
    
