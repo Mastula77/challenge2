@@ -135,13 +135,13 @@ class TestRedFlag(BaseTest):
 	
 	def test_get_all_users(self):
 		
-			response=self.client.post('/api/v1/users/signup/',\
-				data = json.dumps(dict(username = 'mastula',password = 'coolwater',email = 'logosem@gmail.com')),\
-				content_type = ('application/json'))
-			response = self.client.get('/api/v1/users/',content_type = 'application/json')
-			self.assertEqual(response.status_code,404)
+		response=self.client.post('/api/v1/users/signup/',\
+			data = json.dumps(dict(username = 'mastula',password = 'coolwater',email = 'logosem@gmail.com')),\
+			content_type = ('application/json'))
+		response = self.client.get('/api/v1/users/',content_type = 'application/json')
+		self.assertEqual(response.status_code,404)
 
 	def test_get_all_users_in_empty_record(self):
-			response = self.client.get('/api/v1/users/',
-				content_type = 'application/json')
-			self.assertEqual(response.status_code,404)
+		response = self.client.get('/api/v1/users/',
+			content_type = 'application/json')
+		self.assertEqual(response.status_code,404)
