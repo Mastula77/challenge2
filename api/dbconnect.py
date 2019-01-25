@@ -9,8 +9,7 @@ class Dbconnection:
             host="127.0.0.1", dbname="challenge3", user="hayirat", password="password"
             )
         self.connection.autocommit = True
-        self.cursor = self.connection.cursor()
-        self.dict_cursor=self.connection.cursor(cursor_factory=RealDictCursor)
+        self.cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
     def connent_to_db(self):
         self.cursor.execute("SELECT version();")
@@ -31,7 +30,7 @@ class Dbconnection:
         password VARCHAR(20) NOT NULL);"""
         self.cursor.execute(create_user)
 
-    def tables1(self):
+    def table_one(self):
         create_record = """CREATE TABLE IF NOT EXISTS Incidents(\
         record_id SERIAL primary key,\
         createdOn TIMESTAMP,\
@@ -42,8 +41,22 @@ class Dbconnection:
         image VARCHAR(30),\
         videos VARCHAR(30),\
         comment VARCHAR(50));"""
-        
         self.cursor.execute(create_record)
+
+    def table_two(self):
+        create_redflag = """CREATE TABLE IF NOT EXISTS Redflag(\
+        record_id SERIAL primary key,\
+        createdOn TIMESTAMP,\
+        createdBy VARCHAR(30) NOT NULL,\
+        redflagtype VARCHAR(30) NOT NULL,\
+        location VARCHAR(30) NOT NULL,\
+        status VARCHAR(30) NOT NULL,\
+        image VARCHAR(30),\
+        videos VARCHAR(30),\
+        comment VARCHAR(50));"""
+        
+        self.cursor.execute(create_redflag)
+
     def get_incident(self):
         select_records = """SELECT * FROM Incidents;"""
         self.cursor.execute(select_records)
@@ -55,22 +68,26 @@ class Dbconnection:
         result = self.cursor.fetchone()
         return result
 
-    def update_incident(self,location, record_id):
+    def update_incident(self,record_id,location):
         update_record = """ UPDATE Incidents SET location ='{}'\
-        WHERE record_id = '{}'""".format(location, record_id)
+        WHERE record_id = {} RETURNING record_id;""".format(location,record_id)
         self.cursor.execute(update_record)
         result = self.cursor.fetchone()
         return result
 
-    # def create_users(self):
+    def edit_incident(self,record_id,comment):
+        new_comment = """UPDATE Incidents SET comment ='{}' WHERE record_id = {}\
+        RETURNING record_id;""".format(comment,record_id)
+        self.cursor.execute(new_comment)
+        result = self.cursor.fetchone()
+        return result
 
-    #     new_user = """INSERT INTO Users(lastname,
-    #         username, email, password
-    #         ) 
-    #         VALUES(
-    #         'logose','mercy','logosemastula@gmail.com','12hgan'
-    #     );"""
-    #     self.cursor.execute(new_user)
+    def edit_status(self,record_id,status):
+        new_status = """UPDATE Incidents SET status ='{}' WHERE record_id ={}\
+        RETURNING record_id;""".format(status,record_id)
+        self.cursor.execute(new_status)
+        result = self.cursor.fetchone()
+        return result
 
     def create_incident(self, createdBy, interventiontype, location,status,comment):
         new_incident = """INSERT INTO Incidents(createdBy, interventiontype, location, status, comment)
@@ -79,6 +96,33 @@ class Dbconnection:
         return jsonify({
             'message': 'Incident successfully created'
         })
-    #def delete_incident(self)
+    #---------------redflag----------------
+    def post_redflag(self, createdBy, redflagtype, location,status,comment):
+        new_incident = """INSERT INTO Redflag(createdBy, redflagtype, location, status, comment)
+        VALUES('{}','{}', '{}', '{}', '{}');""".format(createdBy, redflagtype, location, status, comment)
+        self.cursor.execute(new_incident)
+        return jsonify({
+            'message': 'Incident successfully created'
+        })
+
+    def edit_status_redflag(self,record_id,status):
+        new_status = """UPDATE Redflag SET status ='{}' WHERE record_id ={}\
+        RETURNING record_id;""".format(status,record_id)
+        self.cursor.execute(new_status)
+        result = self.cursor.fetchone()
+        return result
+
+    def edit_redflag_comment(self,record_id,comment):
+        new_comment = """UPDATE Redflag SET comment ='{}' WHERE record_id = {}\
+        RETURNING record_id;""".format(comment,record_id)
+        self.cursor.execute(new_comment)
+        result = self.cursor.fetchone()
+        return result
+
+    def delete_incident(self, record_id):
+        query = """DELETE FROM Incidents WHERE record_id = '{}';""" .format(record_id)
+        self.cursor.execute(query)
+        return self.cursor.fetchone()
+
 
   
