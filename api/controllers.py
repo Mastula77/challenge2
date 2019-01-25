@@ -42,7 +42,6 @@ class Routes:
         status = data["status"]
         comment = data["comment"]
         get_record = new_db.create_incident(createdBy,interventiontype,location,status,comment)  
-        #data.append(get_record.create_incident())  
         return jsonify ({
             'status':200,
             'message':'created intervention record'
@@ -131,4 +130,17 @@ class Routes:
         return jsonify({
             'status':400,
             'message':'Failed to update'
+        })
+
+    def delete_an_incident(self,record_id):
+        get_record = new_db.delete_incident(record_id)
+        if get_record:
+            return jsonify({
+                'status':200,
+                'id':get_record['record_id'],
+                'message':'Intervention record has been deleted'
+            })
+        return jsonify({
+            'status':200,
+            'message':'Failed to delete the record'
         })

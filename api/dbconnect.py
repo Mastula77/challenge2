@@ -120,7 +120,7 @@ class Dbconnection:
         return result
 
     def delete_incident(self, record_id):
-        query = """DELETE FROM Incidents WHERE record_id = '{}';""" .format(record_id)
+        query = """DELETE FROM Incidents WHERE record_id = {} RETURNING record_id;""" .format(record_id)
         self.cursor.execute(query)
         return self.cursor.fetchone()
 

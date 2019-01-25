@@ -25,6 +25,10 @@ def create_an_incident():
 def create_an_redflag():
     return get_record.insert_redflag()
 
+@app.route("/v2/incidents/<int:record_id>", methods =["DELETE"])
+def delete_one_incidete(record_id):
+    return get_record.delete_an_incident(record_id)
+
 @app.route("/v2/incidents/<int:record_id>/location", methods =["PATCH"])
 def edit_an_incident(record_id):
   request_data = request.get_json()
